@@ -1,38 +1,249 @@
-.App {
-  text-align: center;
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import "../node_modules/@syncfusion/ej2-react-documenteditor/styles/material.css";
+
+
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke;
+    width: 100vw;
+    height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.microskool-button{
+    background-color: rgb(83, 83, 170);
+    margin: 5px;
+    color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.microskool-outline-button{
+    color: rgb(83, 83, 170);
+    border: 2px solid rgb(83, 83, 170);
+    margin: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.mother{
+width: 100%;
+height: 98vh;
+overflow: auto;
+} 
+.centered{
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
-.App-link {
-  color: #61dafb;
+.microskool-title{
+    color: rgb(83, 83, 170);
+    font-weight: bold;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.shadow{
+    box-shadow: 0 0 14px lightgray;
+}
+
+.margin{
+    margin: 5px;
+}
+
+input{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.microskool-icon{
+    width: 50px;
+    height: 50px;
+
+}
+
+.grid-menu{
+    margin:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+font-size: x-small;
+    cursor: pointer;
+}
+
+.grid-item{
+    margin:10px;
+    display: flex;
+  
+    float: left;
+
+  
+}
+.grid-menu:hover{
+    background-color: rgb(83, 83, 170);
+    color: white;
+}
+
+.grid-menu .icon{
+font-size: xx-large;
+}
+.navigation{
+    background-color: white;
+    float: left;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 40%;
+ max-width: 180px;
+ transition: max-width 1s ease-in-out;
+ 
+}
+.board{ 
+    max-width: 80%;
+    min-width: 60%;
+    float: left; 
+ width: 60%;
+    height: 100vh;
+    overflow: auto;
+    transition: width 1s ease-in-out;
+}
+.menu-icon{
+    width: 45px;
+    height: 45px;
+    box-shadow: 0 0 10px lightgray;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    float: left;
+    font-size: large;
+}
+.menu-icon img{
+    width: 85%;
+    height: 85%;
+}
+
+.menu-item{
+cursor: pointer;
+height: 60px;
+}
+.menu-item.active{
+    color: rgb(83, 83, 170);
+}
+
+.item-text{
+    align-items: center;
+    display: flex;
+    height: 100%;
+    font-size: small;
+    
+}
+
+.title{
+    color: rgb(83, 83, 170);
+    font-weight: bold;
+    padding-top: 20px;
+}
+.no-btn{
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.navbtn{
+    float: right;
+    margin: 5px;
+}
+
+.navigation.fall{
+    max-width: 70px;
+}
+
+.board.fall{
+    width: 78%;  
+    max-width: 88%; 
+}
+
+.item-text.fall{
+    display: none;
+}
+
+.padding{
+    padding: 20px;
+}
+.modal{
+    position: absolute !important;
+    background-color: rgba(0, 0, 0, 0.06);
+    display: flex !important;
+    
+ 
+}
+
+.modal .content{
+    background-color: white;
+    box-sizing: 0 0 90px lightgray;
+  transition: height 1s ease-in-out;
+  animation: modalAnimate 1.2s;
+}
+
+@keyframes modalAnimate {
+    0%{
+height: 50px;
+background-color: rgba(83, 83, 170, 0.9);
+    }
+    25%{
+height: 150px;
+background-color: rgba(83, 83, 170, 0.1);
+    }
+    50%{
+height: 250px;
+background-color: rgba(0, 0, 0, 0.1);
+    }
+    75%{
+height: 350px;
+background-color: rgba(255, 255, 255, 0.1);
+    }
+    100%{
+height: auto;
+
+    }
+}
+
+.screen{
+    background-color: black;
+    color: white;
+}
+
+.microskool-border{
+    color: rgb(83, 83, 170);
+    border: 1px solid rgb(83, 83, 170);
+}
+
+.text-microskool{
+    color: rgb(83, 83, 170);
+}
+
+
+
+
+.alert{
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 200000000000000000000;
+    width: 320px;
+    box-shadow: 0 0 28px lightgray;
+    font-size:'x-small';
+}
+
+.full-screen{
+    width: 100vw;
+    height: 100vh;
+    background-color: whitesmoke;
 }
