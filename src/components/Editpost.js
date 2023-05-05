@@ -37,6 +37,7 @@ function Editpost(props) {
       [e.target.name]: e.target.value,
     });
   };
+
   let editorState = EditorState.createWithContent(
     ContentState.createFromBlockArray(
       convertFromHTML(props.postList[0].content)
@@ -59,10 +60,12 @@ function Editpost(props) {
         return;
       }
       axios
-        .post(`http://localhost:5000/editArticle`, {
+        .post(`${process.env.REACT_APP_BACKEND}editArticle`, {
           title: userInfo.title,
           content: userInfo.content.value,
           ids: props.editPostID,
+          
+          fileName,
         })
         .then((res) => {
           // then print response status
@@ -122,7 +125,6 @@ function Editpost(props) {
                   setfileName(e.target.value);
                 }}
               />
-             
             </span>
 
             <button className="btn  margin text-light" onClick={PoemAddbooks}>
@@ -136,14 +138,18 @@ function Editpost(props) {
             <button className="btn  margin text-light  ">
               <FontAwesomeIcon icon={faShareAlt}></FontAwesomeIcon> Share
             </button>
-            <button className="btn  margin text-light  ">
+            
+            <a
+              href={`${process.env.REACT_APP_BACKEND}download/${props.editPostID}`}
+          
+              className="btn  margin text-light  "
+            >
               <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon> Download
-            </button>
+            </a>
           </div>
         </div>
         <div className="row">
           <form onSubmit={PoemAddbooks} className="update__forms">
-           
             <div className="form-row">
               <div className="form-group col-md-12">
                 <input
@@ -156,7 +162,7 @@ function Editpost(props) {
                   required
                 />
               </div>
-              <br/>
+              <br />
               <div className="form-group col-md-12 editor">
                 <Editor
                   editorState={content}
@@ -194,9 +200,7 @@ function Editpost(props) {
                 />
               </div>
               {isError !== null && <div className="errors"> {isError} </div>}
-              <div className="form-group col-sm-12 text-right">
-               
-              </div>
+              <div className="form-group col-sm-12 text-right"></div>
             </div>
           </form>
         </div>

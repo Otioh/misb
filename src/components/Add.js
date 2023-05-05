@@ -39,7 +39,7 @@ function Add() {
   }
 
   let editorState = EditorState.createEmpty();
-
+const [id, setId]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN")
   const [fileName, setfileName] = useState("MicroskoolDocument")
   const [content, setcontent] = useState(editorState);
   const onEditorStateChange = (editorState) => {
@@ -56,15 +56,14 @@ function Add() {
         return;
       }
       axios
-        .post(`http://localhost:5000/addArticle`, {
+        .post(`${process.env.REACT_APP_BACKEND}addArticle`, {
           title: userInfo.title,
           content: userInfo.content.value,
-          id: "MISB"+Math.random(0,9)*232032897,
-          author: "bryonerim@gmail.com",
-          editor: "bryonerim@gmail.com",
-          fileName: "first_file.misb",
-          
-
+          id,
+          author: localStorage.getItem("email"),
+          editor: localStorage.getItem("email"),
+          editorname: localStorage.getItem("first_name") + " "+localStorage.getItem("surname"),
+          fileName: fileName + ".misb",
         })
         .then((res) => {
           if (res.data.success === true) {
@@ -120,9 +119,9 @@ function Add() {
             <button className="btn  margin text-light  ">
               <FontAwesomeIcon icon={faShareAlt}></FontAwesomeIcon> Share
             </button>
-            <button className="btn  margin text-light  ">
+            <a href={`${process.env.REACT_APP_BACKEND}download/${id}`}  className="btn  margin text-light  ">
               <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon> Download
-            </button>
+            </a>
           </div>
         </div>
         <div className="row">
@@ -139,7 +138,7 @@ function Add() {
                   required
                 />
               </div>
-              <div className="form-group col-md-12 editor">
+              <div className="form-group col-md-12 editor" style={{overflow:'auto'}}>
                 <br />
                 <Editor
                   editorState={content}

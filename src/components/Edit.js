@@ -11,9 +11,12 @@ const Edit = ({ ids }) => {
   const viewPostId = async (ids) => {
     try {
       await axios
-        .post(`http://localhost:5000/getPostId`, {
-          ids,
-        })
+        .post(
+          `${process.env.REACT_APP_BACKEND}getPostId`,
+          {
+            ids,
+          }
+        )
         .then((res) => {
           if (res.data.success === true) {
             setpostId(res.data.data);
