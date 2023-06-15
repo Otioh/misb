@@ -5,7 +5,7 @@ import Editpost from "./Editpost";
 const Edit = ({ ids }) => {
   useEffect(() => {
     viewPostId(ids);
-  }, []);
+  }, [ids]);
 
   const [ispostId, setpostId] = useState([]);
   const viewPostId = async (ids) => {

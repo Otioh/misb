@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-
+import {notification} from 'antd';
 import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faCoins,  faDownload, faFileEdit,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faCode, faCoins,  faDownload, faFileEdit,  faPowerOff,  faRobot,  faTimes, faUpload, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
+import "./css/style.css";
+import "./css/responsive.css";
+// import { DataGrid } from '@mui/x-data-grid';
+
 
 function Home({ setIds }) {
   const [show, setShow]=useState(false);
@@ -16,9 +20,42 @@ function Home({ setIds }) {
 const [file, setfile] = useState({})
 const [email, setemail] = useState("");
 const [password, setpassword] = useState("")
+const [toggled, settoggled] = useState(false)
 
 
 
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'code',
+      headerName: 'Code',
+      width: 150,
+
+    },
+    {
+      field: 'title',
+      headerName: 'Title',
+      width: 150,
+
+    },
+
+    {
+      field: 'department',
+      headerName: 'Department',
+      width: 150,
+
+
+    },
+    {
+      field: 'level',
+      headerName: 'Level',
+      width: 150,
+      sortable: false,
+      filterable: false,
+
+    },
+  ];
 
 
 
@@ -27,7 +64,7 @@ const [password, setpassword] = useState("")
 
    const copy=()=>{
    if(email==="" || password===""){
-    alert("E-Mail & Password is required")
+    notification.error({message:"E-Mail & Password is required"})
    }else{
     
        axios
@@ -35,110 +72,54 @@ const [password, setpassword] = useState("")
            `${process.env.REACT_APP_BACKEND}transactions/validate`,
            {
              sender: email,
-             amount:96,
+             amount:150,
              password: password,
            }
          )
          .then((res) => {
+       
            if (res.data.success) {
+           
              axios
                .post(
-                 `${process.env.REACT_APP_BACKEND}transactions`,
-                 {
-                   transaction_id:
-                     "T255" + Math.random() * 2344354,
-                   item: "Material",
-                   description_sender:
-                     "Payment you made for a Microskool Document(MiSB)",
-                   description_receiver:
-                     "Charge for (MiSB) Document ",
-                   sender: localStorage.getItem('email'),
-                   receiver: "Microskool",
-                   amount:96,
-                   status: "Approved",
-                 }
-               )
-               .then((res) => {
-                 if (res.data.success) {
-                   axios
-                     .post(
-                       `${process.env.REACT_APP_BACKEND}updatecoins`
-                       ,
+                 `${process.env.REACT_APP_BACKEND}paybook`, { sender: email, receiver: file.author, amount:150 }).then((resp)=>{
+                  notification.info({message:resp.data.message}) 
+                  if(resp.data.success){
+
+
+
+                     axios.post(`${process.env.REACT_APP_BACKEND}addArticle`,
                        {
-                         email:localStorage.getItem('email'),
-                         coins:96,
-                         type:'debt'
-                         
+                         title: file.title, content: file.content, id: "MISB" + Math.random(0, 9) * 232032897 + "IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN",
+                         author: file.author, editor: localStorage.getItem('email'), editorname: localStorage.getItem('first_name') + " " + localStorage.getItem('surname'), fileName: file.fileName
                        }
-                     )
-                     .then((response) => {
-                      
-                        
-                     });
 
 
-                   axios
-                     .post(
-                       `${process.env.REACT_APP_BACKEND}transactions`,
-                       {
-                         transaction_id:
-                           "T255" + Math.random() * 2344354,
-                         item: "Material",
-                         description_sender:
-                           "Remittance for a Microskool Document(MiSB) ",
-                         description_receiver:
-                           "Earnings for a Microskool Document(MiSB) you created",
-                         sender: "Microskool",
-                         receiver: file.author,
-                         amount: 66,
-                         status: "Approved",
-                       }
-                     )
-                     .then((res) => {
+                     ).then((response) => {
 
-                       axios.post(`${process.env.REACT_APP_BACKEND}addArticle`,
-                         {
-                           title: file.title, content: file.content, id: "MISB" + Math.random(0, 9) * 232032897 + "IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN",
-                           author: file.author, editor: localStorage.getItem('email'), editorname: localStorage.getItem('first_name') + " " + localStorage.getItem('surname'), fileName: file.fileName
-                         }
+                       setselected(false)
+                       setShow(false);
+                       viewPost();
 
 
-                       ).then((res) => {
+                                    notification.info({message:response.data.message})
+                      setShow(false)
+                      setselected(false)
+                      if(response.data.success){
+                        notification.success({ message: response.data.message })
 
-                         setselected(false)
-                         setShow(false);
-                         navigate('/receipt')
-                       })
+                      }else{
+                        notification.error({ message: response.data.message })
 
+                      }
 
                      })
+                   }
 
-                   axios
-                     .post(
-                       `${process.env.REACT_APP_BACKEND}updatecoins`,
-                       {
-                         email: file.author,
-                         coins: 66,
-                         type: 'credit'
-
-                       }
-                     )
-                     .then((response) => {
-
-
-                      alert(response.data.message)
-                   
-                     });
-                 alert(res.data.message)
-                  
-                 
-                 } else {
-                  
-                  alert( "Transaction Failed")
-                 }
-               });
+                 })
+           
            } else {
-            alert( res.data.message)
+            notification.error({message: res.data.message})
          
            }
          });
@@ -205,7 +186,7 @@ const [password, setpassword] = useState("")
                 <div style={{}}>
                   <span className="badge bg-info">Current File Owner: {file.editorname}</span>   
                   {
-                    file.editor === localStorage.getItem("email") ? <i>You have access to this file, check your file list</i> : <span><input type="email" placeholder="Your E-Mail" className="simple-input" onChange={e => setemail(e.target.value)} /><input type="password" placeholder="Your Password" className="simple-input" onChange={e => setpassword(e.target.value)} /> <button className="btn btn-primary simple-button" onClick={copy}><FontAwesomeIcon icon={faCoins}></FontAwesomeIcon> 96 Grab a Copy</button> </span>
+                    file.editor === localStorage.getItem("email") ? <i>You have access to this file, check your file list</i> : <span><input type="email" placeholder="Your E-Mail" className="simple-input" onChange={e => setemail(e.target.value)} /><input type="password" placeholder="Your Password" className="simple-input" onChange={e => setpassword(e.target.value)} /> <button className="btn btn-primary simple-button" onClick={copy}><FontAwesomeIcon icon={faCoins}></FontAwesomeIcon> 150 Grab a Copy</button> </span>
                   }
                   
                   </div>
@@ -222,8 +203,9 @@ const [password, setpassword] = useState("")
                       formData.append('file', e.target.files[0])
   
                       axios.post(`${process.env.REACT_APP_BACKEND}file/${(Math.random() + 1).toString(36).substring(7) + ".misb"}`, formData).then((res) => {
-setcontent(res.data.content)
-                        setfile(res.data)
+
+                        setcontent(res.data.data.content)
+                        setfile(res.data.data)
                       })
                       setselected(true)
                     }} />
@@ -266,7 +248,8 @@ setcontent(res.data.content)
                 axios
                   .get(`${process.env.REACT_APP_BACKEND}deletePost/${curId}`)
                   .then((res) => {
-                    alert(res.data.message);
+                    viewPost()
+                    notification.info({message:res.data.message});
                     setvis(false);
                   });
               }}
@@ -283,40 +266,97 @@ setcontent(res.data.content)
             </button>
           </ModalFooter>
         </Modal>
-        <div className="row">
-          <div className="col-sm-12">
-            <span>
-      
-              <button
-                style={{ float: "right", margin: "7px" }}
-                className="btn btn-dark"
-                onClick={() => {
-                  setShow(true);
-                }}
-              >
-                <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon> From
-                Device
-              </button>
 
-              <button
-                style={{ float: "right", margin: "7px" }}
-                className="btn btn-dark"
-                onClick={() => {
-                  navigate("/new-microskool-document");
-                }}
-              >
-                <FontAwesomeIcon icon={faAdd}></FontAwesomeIcon> Create New
-              </button>
-            </span>
+        <div className="hero_area">
+          {/* <!-- header section strats --> */}
+          <header className="header_section">
+            <div className="container-fluid">
+              <nav className="navbar navbar-expand-lg custom_nav-container pt-3">
+                <a className="navbar-brand" href="/">
+                  <img style={{width:'70px'}} alt="logo" src={MicroskoolIcon} />
+                </a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={()=>{
+                  settoggled(!toggled)
+                }}>
+                  <span className="navbar-toggler-icon"></span>
+                </button>
 
-            <div className="menu-icon" style={{ marginTop: "49px" }}>
-              <img alt="logo" src={MicroskoolIcon} />
+                <div className="collapse navbar-collapse" id="navbarSupportedContent" style={toggled?{display:'block'}:{}}>
+                  <div className="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                    <ul className="navbar-nav  ">
+                      <li className="nav-item active">
+                        <button style={{ border: 'none', backgroundColor: 'none' }} className="nav-link" onClick={() => {
+                          navigate("/");
+                        }}><FontAwesomeIcon icon={faFileEdit}></FontAwesomeIcon> Files </button>
+                      </li>
+                      <li className="nav-item">
+                        <button style={{ border: 'none', backgroundColor: 'none' }} className="nav-link" onClick={() => {
+                          navigate("/new-microskool-document");
+                        }}>                     <FontAwesomeIcon icon={faRobot}></FontAwesomeIcon> Leverage AI
+                        </button>
+                      </li>
+                      <li className="nav-item">
+                        <button style={{ border: 'none', backgroundColor: 'none' }} className="nav-link" onClick={() => {
+                          navigate("/new-microskool-document");
+                        }}>
+                          <FontAwesomeIcon icon={faAdd}></FontAwesomeIcon> Create New
+                        </button>
+                      </li>
+                      
+                      <li className="nav-item">
+                        <button style={{ border: 'none', backgroundColor: 'none' }} className="nav-link" onClick={() => {
+                          setShow(true);
+                        }}
+                        >
+                          <FontAwesomeIcon icon={faUpload}></FontAwesomeIcon> From
+                          Device
+                        </button>
+                      </li>
+                      <li className="nav-item">
+                        <button style={{ border: 'none', backgroundColor: 'none' }} className="nav-link" onClick={() => {
+                          localStorage.clear()
+                          navigate('/login')
+                        }}
+                        >
+                          <FontAwesomeIcon icon={faPowerOff}></FontAwesomeIcon> <small>{localStorage.getItem('email')}</small></button>
+                      </li>
+                    </ul>
+                    <form className="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                      <button className="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
+                    </form>
+                  </div>
+                </div>
+              </nav>
             </div>
-            <span style={{ fontSize: "large" }} className={"item-text title"}>
-              Microskool Safe File Manager
-            </span>
+          </header>
           </div>
-        </div>
+
+
+<div className="row">
+          {/* <div className="table-responsive" >
+
+            <div style={{ height: '420px' }}>
+              <DataGrid
+                rows={courses}
+                columns={columns}
+
+              />
+            </div>
+
+          </div> */}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+       
         <div className="row">
           <div className="col-sm-3"></div>
           <div className="col-sm-6">
@@ -343,7 +383,7 @@ setcontent(res.data.content)
                           setcurId(item.id);
                         }}
                       >
-                        Delete
+                        Delete 
                       </button>{" "}
                       <a href={`${process.env.REACT_APP_BACKEND}download/${item.id}`} className="btn microskool-button"
                         style={{ float: "right" }}>

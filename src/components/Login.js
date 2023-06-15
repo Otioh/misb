@@ -3,16 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MicroskoolIcon from "../Images/micro.png";
 import {
   faLock,
-  faKey,
-  faUserLock,
+
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
+import { notification } from 'antd';
 
-
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { useSelector } from "react-redux";
+
 
 
 function Login() {
@@ -61,11 +60,11 @@ function Login() {
            
        setTimeout(() => {
         navigate('/')
-         alert(response.data.message)
+         notification.success({message:response.data.message})
        }, 1000);
         } else {
-            alert(response.data.message)
-        }
+          notification.error({ message: response.data.message })
+       }
       })
       
   };

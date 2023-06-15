@@ -10,10 +10,10 @@ import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAdd,
+
   faDownload,
   faFile,
-  faFileDownload,
+
   faPrint,
   faSave,
   faShareAlt,
@@ -39,7 +39,7 @@ function Add() {
   }
 
   let editorState = EditorState.createEmpty();
-const [id, setId]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN")
+const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN")
   const [fileName, setfileName] = useState("MicroskoolDocument")
   const [content, setcontent] = useState(editorState);
   const onEditorStateChange = (editorState) => {

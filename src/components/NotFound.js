@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, {  } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MicroskoolIcon from "../Images/micro.png";
 import {
-    faLock,
-    faKey,
-    faUserLock,
-    faEye,
+
     faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
 
 
 function NotFound() {
 
 
 
-    const [email, setEmail] = useState();
-    const [password, setpassword] = useState("");
+ 
     let navigate = useNavigate();
 
 

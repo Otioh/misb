@@ -13,10 +13,10 @@ import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAdd,
+
   faDownload,
   faFile,
-  faFileDownload,
+
   faPrint,
   faSave,
   faShareAlt,
@@ -49,7 +49,9 @@ function Editpost(props) {
     setcontent(editorState);
   };
 
-  const uploadFile = () => {};
+  const uploadFile = () => {
+    alert('Yes')
+  };
   const [isError, setError] = useState(null);
   const PoemAddbooks = async (event) => {
     try {
