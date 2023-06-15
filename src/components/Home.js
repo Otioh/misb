@@ -3,7 +3,7 @@ import {notification} from 'antd';
 import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faCode, faCoins,  faDownload, faFileEdit,  faPowerOff,  faRobot,  faTimes, faUpload, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAdd,  faCoins,  faDownload, faFileEdit,  faPowerOff,  faRobot,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import "./css/style.css";
@@ -23,39 +23,6 @@ const [password, setpassword] = useState("")
 const [toggled, settoggled] = useState(false)
 
 
-
-
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-      field: 'code',
-      headerName: 'Code',
-      width: 150,
-
-    },
-    {
-      field: 'title',
-      headerName: 'Title',
-      width: 150,
-
-    },
-
-    {
-      field: 'department',
-      headerName: 'Department',
-      width: 150,
-
-
-    },
-    {
-      field: 'level',
-      headerName: 'Level',
-      width: 150,
-      sortable: false,
-      filterable: false,
-
-    },
-  ];
 
 
 
