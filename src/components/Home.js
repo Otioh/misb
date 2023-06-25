@@ -3,12 +3,13 @@ import {notification} from 'antd';
 import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd,  faCoins,  faDownload, faFileEdit,  faPowerOff,  faRobot,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faAdd,  faCoins,  faDeleteLeft,  faDownload, faFileEdit,  faPowerOff,  faRecycle,  faRobot,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import {DataGrid} from '@mui/x-data-grid';
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import "./css/style.css";
 import "./css/responsive.css";
-// import { DataGrid } from '@mui/x-data-grid';
+
 
 
 function Home({ setIds }) {
@@ -24,7 +25,76 @@ const [toggled, settoggled] = useState(false)
 
 
 
+  const columns = [
+    {
+      field: 'file', headerName: 'File', renderCell: (item) => (
+        <>
+        <FontAwesomeIcon
+          className="text-microskool"
+          icon={faFileEdit}
+          ></FontAwesomeIcon> 
+        </>
+      ),
+    },
 
+    {
+      field: 'fileName',
+      headerName: 'File Name',
+width:230
+
+    },   
+
+    {
+      field: 'title',
+      headerName: 'Title',
+    
+
+    },
+    {
+      field: 'dateLastEdited',
+      headerName: 'Date Created',
+   
+    },
+
+
+ 
+    {
+      field: 'open', headerName: 'Open',  renderCell: (item) => (
+        <>
+      <button
+        className="btn btn-outline-primary"
+        
+        onClick={() => {
+          setIds(item.id);
+          navigate(`/Edit/${item.id}`);
+        }}
+      >
+        Open
+      </button>
+
+        </>
+      ),
+},
+    {
+      field: 'delete', headerName: 'Delete', width: 90, renderCell: (item) => (
+        <>
+         
+          <button
+            className="btn btn-outline-danger"
+
+            onClick={() => {
+              setvis(true);
+              setcurId(item.id);
+            }}
+          >
+             <FontAwesomeIcon icon={faDeleteLeft} />
+          </button>
+        </>
+      ),
+    }
+
+    
+  ];
 
 
 
@@ -337,6 +407,7 @@ const [toggled, settoggled] = useState(false)
               }}
             >
               <h3>Select Document to Open</h3>
+              <DataGrid  style={{height:'370px'}} rows={ispost}  rowsPerPageOptions={[2,5,10,20,50, 100]} columns={columns}/>
 
               <ul className="list-group">
                 {ispost?.map((item, index) => (
