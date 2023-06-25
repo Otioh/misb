@@ -3,7 +3,7 @@ import {notification} from 'antd';
 import axios from "axios";
 import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd,  faCoins,  faDeleteLeft,  faDownload, faFileEdit,  faPowerOff,  faRecycle,  faRobot,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faAdd,  faCoins,  faDeleteLeft, faFileEdit,  faPowerOff, faRobot,  faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {DataGrid} from '@mui/x-data-grid';
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
