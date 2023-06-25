@@ -395,8 +395,8 @@ width:230
 
        
         <div className="row">
-          <div className="col-sm-3"></div>
-          <div className="col-sm-6">
+        
+          <div className="col-sm-12">
             <div
               className="row"
               style={{
@@ -409,52 +409,10 @@ width:230
               <h3>Select Document to Open</h3>
               <DataGrid  style={{height:'370px'}} rows={ispost}  rowsPerPageOptions={[2,5,10,20,50, 100]} columns={columns}/>
 
-              <ul className="list-group">
-                {ispost?.map((item, index) => (
-                  <li className="list-group-item" key={index} style={{margin:'5px', boxShadow:'0 0 14px lightgray'}}>
-                    <span>
-                      <button
-                        className="btn microskool-button"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          setvis(true);
-                          setcurId(item.id);
-                        }}
-                      >
-                        Delete 
-                      </button>{" "}
-                      <a href={`${process.env.REACT_APP_BACKEND}download/${item.id}`} className="btn microskool-button"
-                        style={{ float: "right" }}>
-                        <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon> Download
-                      </a>
-
-                      <button
-                        className="btn microskool-button"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          setIds(item.id);
-                          navigate(`/Edit/${item.id}`);
-                        }}
-                      >
-                        Open
-                      </button>{" "}
-                    </span>
-                    <FontAwesomeIcon
-                      className="text-microskool"
-                      icon={faFileEdit}
-                    ></FontAwesomeIcon>{" "}
-                    <i style={{fontSize:'small'}}> {item.fileName}</i>
-                    <div>{item.title.substring(0, 32)}...</div>
-                    <div style={{ fontSize: "x-small", color: "gray" }}>
-                      {new Date(item.dateLastEdited).toLocaleDateString()}||
-                      {new Date(item.dateLastEdited).toLocaleTimeString()}
-                    </div>
-                  </li>
-                ))}
-              </ul>
+             
             </div>
           </div>
-          <div className="col-sm-3"></div>
+         
         </div>
       </div>
     </>
