@@ -34,8 +34,12 @@ function Add() {
     });
   };
 
-  const uploadFile=()=>{
+  const uploadFile=(image)=>{
+let url = URL.createObjectURL(image)
 
+
+
+return {url};
   }
 
   let editorState = EditorState.createEmpty();

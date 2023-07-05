@@ -11,7 +11,6 @@ import "./css/style.css";
 import "./css/responsive.css";
 
 
-
 function Home({ setIds }) {
   const [show, setShow]=useState(false);
    const [vis, setvis] = useState(false);
@@ -27,7 +26,7 @@ const [toggled, settoggled] = useState(false)
 
   const columns = [
     {
-      field: 'file', headerName: 'File', renderCell: (item) => (
+      field: 'file', headerName: 'File', width:40, renderCell: (item) => (
         <>
         <FontAwesomeIcon
           className="text-microskool"
@@ -47,19 +46,20 @@ width:230
     {
       field: 'title',
       headerName: 'Title',
+      width:200
     
 
     },
     {
       field: 'dateLastEdited',
       headerName: 'Date Created',
-   
+      width: 150
     },
 
 
  
     {
-      field: 'open', headerName: 'Open',  renderCell: (item) => (
+      field: 'open', headerName: 'Open', width: 100,  renderCell: (item) => (
         <>
       <button
         className="btn btn-outline-primary"
@@ -76,7 +76,7 @@ width:230
       ),
 },
     {
-      field: 'delete', headerName: 'Delete', width: 90, renderCell: (item) => (
+      field: 'delete', headerName: 'Delete', width: 100, renderCell: (item) => (
         <>
          
           <button
