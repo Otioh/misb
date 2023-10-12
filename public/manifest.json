@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Drop Book",
+  "name": "Drop Book Editor",
   "icons": [
     {
       "src": "favicon.ico",

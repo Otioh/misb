@@ -5,21 +5,25 @@ import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {  useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Spinner } from 'react-bootstrap'
 
 
-import MicroskoolIcon from "../Images/micro.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 
-  faDownload,
-  faFile,
 
+  faDownload,
+
+
+  faFilePdf,
+  faFolderOpen,
   faPrint,
+
+  faRobot,
   faSave,
-  faShareAlt,
+
 } from "@fortawesome/free-solid-svg-icons";
 
-import "draft-js/dist/Draft.css";
 
 
 function Add() {
@@ -43,15 +47,24 @@ return {url};
   }
 
   let editorState = EditorState.createEmpty();
-const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN")
-  const [fileName, setfileName] = useState("MicroskoolDocument")
+  const [id] = useState("MISB" + Date.now() + "IJIFNSDDNNK11NNKNK1NK1VCFCVJSDSDV737DGSDSDDBSDHSDJHSHDJDHJJ8838729838YEJNJSNJDJANAJSJASJKAJSJI3283033200000000000000000000007DS6DS767___DHBSHD4488D5333WEY7Y7Y84DTZGXZGXGVB7744443324FCHJCYGDFNSDNSN")
+  const [fileName, setfileName] = useState("DropFile" + Date.now())
   const [content, setcontent] = useState(editorState);
+  const [filepicked, setfilepicked] = useState(false)
+  const [prompting, setprompting] = useState(false)
+  const [error, seterror] = useState(null)
+  const [description, setdescription] = useState('')
+  const [email, setemail] = useState('')
+  const [password, setpassword] = useState('')
+
+  const [loading, setloading] = useState(false)
   const onEditorStateChange = (editorState) => {
     setcontent(editorState);
   };
 
   const [isError, setError] = useState(null);
   const addDetails = async (event) => {
+
     try {
       event.preventDefault();
       event.persist();
@@ -61,7 +74,7 @@ const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1
       }
       axios
         .post(`${process.env.REACT_APP_BACKEND}addArticle`, {
-          title: userInfo.title,
+
           content: userInfo.content.value,
           id,
           author: localStorage.getItem("email"),
@@ -70,83 +83,81 @@ const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1
           fileName: fileName + ".misb",
         })
         .then((res) => {
-          if (res.data.success === true) {
-            navigate("/");
-          }
+          sessionStorage.setItem('lastdoc', fileName)
+          alert(res.data)
         });
     } catch (error) {
       throw error;
     }
   };
 
+
+  const generateAI = (e) => {
+    e.preventDefault()
+    setloading(true)
+    axios.post(`${process.env.REACT_APP_BACKEND}generate-article`, { prompt: description, email, password }).then((res) => {
+      setloading(false)
+      // setuserInfo({ ...userInfo, content:{} res.data })
+      setprompting(false)
+    }).catch((err) => {
+      setloading(false)
+      seterror(err)
+      console.log(err)
+    })
+  }
+
+
+
+
+
+
   return (
-    <div className="full-screen">
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-12">
-            <span
-              style={{ float: "right" }}
-              className=" "
-              onClick={() => {}}
-            ></span>
-            <div className="menu-icon" style={{ marginTop: "19px" }}>
-              <img alt="logo" src={MicroskoolIcon} />
-            </div>
-            <span style={{ fontSize: "large" }} className={"item-text title"}>
-              Microskool Safe Book
-            </span>
+    <div className="row layer">
+      <div className="col-12" style={{ overflow: 'auto', backgroundColor: 'rgb(83,83,170)' }}>
+        <div className="p-2 my-bg flex-row-between "  >
+          <div className="top-menus">
+            <span className="text-light" style={{ fontWeight: 'bold', fontStyle: 'italic' }}>Drop Book</span>
+            <button onClick={() => setprompting(true)}> <FontAwesomeIcon icon={faRobot}></FontAwesomeIcon> </button>
+            <input id="file" accept=".misb" type="file" hidden onChange={() => setfilepicked(true)} /><label htmlFor="file">
+              <FontAwesomeIcon icon={faFolderOpen}></FontAwesomeIcon> </label>
+            <button onClick={addDetails}> <FontAwesomeIcon icon={faSave}></FontAwesomeIcon> </button>
+            <button > <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon> </button>
+            <button> <FontAwesomeIcon icon={faPrint}></FontAwesomeIcon> </button>
+            <button> <FontAwesomeIcon icon={faFilePdf}></FontAwesomeIcon> </button>
+
           </div>
-        </div>
-        <div className="row">
-          <div
-            className="col-sm-12"
-            style={{ margin: "5px", backgroundColor: "rgb(83,83,170)" }}
-          >
-            <span style={{width:'250px', display:'flex', margin:'5px', backgroundColor:'whitesmoke', padding:'5px', alignItems:'center'}}>
-              <FontAwesomeIcon icon={faFile}></FontAwesomeIcon>{" "}
-             <input placeholder="File Name" value={fileName} style={{width:'180px', border:'none', background:'none', outline:0, paddingLeft:'7px'}} onChange={(e)=>{
+          <div className="filename">
+            <label>Filename</label>
+            <input placeholder="File Name" value={fileName} onChange={(e) => {
               setfileName(e.target.value)
-             }} />
-              <i className="text-secondary">.misb</i>
-            </span>
-
-         
-
-            <button className="btn  margin text-light" onClick={addDetails}>
-              <FontAwesomeIcon icon={faSave}></FontAwesomeIcon> Save
-            </button>
-
-            <button className="btn  margin text-light  ">
-              <FontAwesomeIcon icon={faPrint}></FontAwesomeIcon> Print
-            </button>
-
-            <button className="btn  margin text-light  ">
-              <FontAwesomeIcon icon={faShareAlt}></FontAwesomeIcon> Share
-            </button>
-            <a href={`${process.env.REACT_APP_BACKEND}download/${id}`}  className="btn  margin text-light  ">
-              <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon> Download
-            </a>
+            }} />
           </div>
         </div>
-        <div className="row">
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className="row resp">
           <form onSubmit={addDetails} className="update__forms">
             <div className="form-row">
-              <div className="form-group col-md-12">
-                <input
-                  type="text"
-                  name="title"
-                  value={userInfo.title}
-                  onChange={onChangeValue}
-                  className="form-control"
-                  placeholder="Title *"
-                  required
-                />
-              </div>
-              <div className="form-group col-md-12 editor" style={{overflow:'auto'}}>
-                <br />
+
+
                 <Editor
                   editorState={content}
                   toolbarClassName="toolbarClassName"
+
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
                   onEditorStateChange={onEditorStateChange}
@@ -155,11 +166,13 @@ const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1
                     backgroundColor: "white",
                     padding: "20px",
                     borderRadius: "5px",
+                    height: '600px',
+
                     width: "8.5in",
                     border: "solid 1px lightgray",
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginBottom: "50px",
+
                   }}
                   toolbar={{
                     history: { inDropdown: true },
@@ -179,12 +192,67 @@ const [id]=useState( "MISB" + Math.random(0, 9) * 232032897+"IJIFNSDDNNK11NNKNK1
                   value={draftToHtml(convertToRaw(content.getCurrentContent()))}
                 />
               </div>
-              {isError !== null && <div className="errors"> {isError} </div>}
+
               <div className="form-group col-sm-12 text-right"></div>
-            </div>
-          </form>
-        </div>
+
+        </form>
       </div>
+
+      <Modal show={filepicked} onEscapeKeyDown={() => setfilepicked(false)} >
+        <ModalHeader>
+          Document Preview
+        </ModalHeader>
+        <ModalBody>
+          <div />
+        </ModalBody>
+      </Modal>
+
+
+
+      <Modal show={prompting} onEscapeKeyDown={() => setprompting(false)} onHide={() => setprompting(false)}>
+        <form onSubmit={generateAI}>
+          <ModalHeader>
+            <ModalTitle>
+
+              Promt AI to create article
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+
+
+            {error && <div className="alert alert-danger">{error?.response?.data?.message}</div>}
+            <div >
+
+              <div className="form-group p-2">
+                <textarea className="form-control" placeholder="Describe your article" value={description} onChange={(e) => {
+                  setdescription(e.target.value)
+                }} />
+              </div>
+              <br />
+              <hr />
+              <span>Dropoud User to Charge</span>
+              <div className="form-group p-2">
+                <input className="form-control" value={email} placeholder="E-Mail" type="email" onChange={(e) => setemail(e.target.value)} />
+            </div>
+              <div className="form-group p-2">
+                <input className="form-control" value={password} placeholder="Password" type="password" onChange={(e) => setpassword(e.target.value)} />
+              </div>
+            </div>
+
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary" >
+              {
+                loading ?
+                  <Spinner /> :
+                  'Create'
+              }
+            </button>
+          </ModalFooter>
+        </form>
+      </Modal>
+
+
     </div>
   );
 }
